@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
+
 import logo from "./assets/logo.svg";
 import arrow from "./assets/icon-arrow-down.svg";
 import moon from "./assets/icon-moon.svg";
 import search from "./assets/icon-search.svg";
 import sun from "./assets/icon-sun.svg";
+import smile from "./assets/smile.png";
 
 import Heading from "./Heading";
 import Content from "./Content";
@@ -16,8 +17,8 @@ function App() {
   const [results, setResults] = useState([]);
   const [font, setFont] = useState(true);
   const [fontName, setFontName] = useState("Sans Serif");
-
-  console.log(results);
+  const [empty, setEmpty] = useState("");
+  const [error, setError] = useState(true);
 
   function themeChange() {
     setActive(!active);
@@ -31,14 +32,21 @@ function App() {
   };
 
   const searchWord = async () => {
+    if (searchBar === "") {
+      setError(false);
+      const ops = "Whoops, can’t be empty…";
+      setEmpty(ops);
+    }
     try {
       const response = await fetch(
         `https://api.dictionaryapi.dev/api/v2/entries/en/` + searchBar
       );
       const data = await response.json();
       setResults(data[0]);
+      const reset = "";
+      setSearchBar(reset);
     } catch (error) {
-      console.log("error");
+      setError(!error);
     }
   };
 
@@ -145,7 +153,11 @@ function App() {
           <input
             value={searchBar}
             type="text"
-            onChange={(event) => setSearchBar(event.target.value)}
+            onChange={(event) => {
+              setSearchBar(event.target.value);
+              const reset = "";
+              setEmpty(reset);
+            }}
             placeholder="Search for any word…"
             className="font-bold text-base leading-5 text-white md:text-xl outline-none w-full "
             style={{
@@ -155,13 +167,38 @@ function App() {
           />
           <img src={search} onClick={searchWord} className="cursor-pointer" />
         </div>
-        {results?.meanings?.length > 0 && (
+        <span className="text-[#FF5252] ml-3 mt-1"> {empty} </span>
+
+        {results?.meanings?.length > 0 ? (
           <>
             <Heading active={active} {...heading()} />
             {results.meanings.map((content, index) => {
               return <Content active={active} {...content} key={index} />;
             })}
             <Source active={active} results={results} />
+          </>
+        ) : (
+          <>
+            <div
+              className="w-full h-full pt-28 flex flex-col  items-center "
+              style={{ display: error ? "none" : "flex" }}
+            >
+              <img src={smile} />
+              <span
+                className="mt-8 font-bold text-base leading-6"
+                style={{ color: active ? "white" : "#2D2D2D" }}
+              >
+                No Definitions Found
+              </span>
+              <span
+                className="mt-4 text-center font-normal text-base leading-6"
+                style={{ color: active ? "#757575" : "#757575" }}
+              >
+                Sorry pal, we couldn't find definitions for the word you were
+                looking for. You can try the search again at later time or head
+                to the web instead.
+              </span>
+            </div>
           </>
         )}
       </main>
