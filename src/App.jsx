@@ -90,7 +90,7 @@ function App() {
           >
             <span
               onClick={fontChoose}
-              className={`hover:text-[#A445ED] font-bold text-white cursor-pointer ${
+              className={`hover:text-[#A445ED] font-bold cursor-pointer ${
                 !active ? "text-[#2D2D2D]" : null
               }`}
             >
