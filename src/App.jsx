@@ -93,7 +93,7 @@ function App() {
               onClick={fontChoose}
               className={` font-bold  cursor-pointer ${
                 !active ? "text-[#2D2D2D]" : "text-white"
-              }`}
+              } hover:text-[#A445ED] `}
             >
               Sans Serif
             </span>
