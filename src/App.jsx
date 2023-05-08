@@ -19,6 +19,7 @@ function App() {
   const [fontName, setFontName] = useState("Sans Serif");
   const [empty, setEmpty] = useState("");
   const [error, setError] = useState(true);
+  console.log(active);
 
   function themeChange() {
     setActive(!active);
@@ -90,7 +91,7 @@ function App() {
           >
             <span
               onClick={fontChoose}
-              className={`hover:text-[#A445ED] font-bold  cursor-pointer ${
+              className={` font-bold  cursor-pointer ${
                 !active ? "text-[#2D2D2D]" : "text-white"
               }`}
             >
