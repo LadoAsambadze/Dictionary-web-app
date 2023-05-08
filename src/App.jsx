@@ -91,7 +91,7 @@ function App() {
             <span
               onClick={fontChoose}
               className={`hover:text-[#A445ED] font-bold text-white cursor-pointer ${
-                !active ? "text-[black]" : null
+                !active ? "text-[#2D2D2D]" : null
               }`}
             >
               Sans Serif
@@ -99,7 +99,7 @@ function App() {
             <span
               onClick={fontChoose}
               className={`hover:text-[#A445ED] font-bold mt-4 cursor-pointer text-white ${
-                !active ? "text-[black]" : null
+                !active ? "text-[#2D2D2D]" : null
               }`}
             >
               Serif
@@ -107,7 +107,7 @@ function App() {
             <span
               onClick={fontChoose}
               className={`hover:text-[#A445ED] font-bold cursor-pointer mt-4 text-white ${
-                !active ? "text-[black]" : null
+                !active ? "text-[#2D2D2D]" : null
               }`}
             >
               Mono
