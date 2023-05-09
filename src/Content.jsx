@@ -21,9 +21,7 @@ export const Content = ({ active, partOfSpeech, definitions, synonyms }) => {
         </span>
         <ul className=" list-disc pl-5  mt-4">
           {definitions.map((def, index) => (
-           
             <li
-
               key={index}
               className="text-white md:text-xl "
               style={{ color: active ? "white" : "#2D2D2D" }}

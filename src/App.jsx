@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import logo from "./assets/logo.svg";
 import arrow from "./assets/icon-arrow-down.svg";
@@ -10,16 +10,17 @@ import smile from "./assets/smile.png";
 import Heading from "./Heading";
 import Content from "./Content";
 import Source from "./Source";
+import axios from "axios";
 
 function App() {
   const [active, setActive] = useState(true);
   const [searchBar, setSearchBar] = useState("");
-  const [results, setResults] = useState([]);
+  const [results, setResults] = useState(null);
   const [font, setFont] = useState(true);
   const [fontName, setFontName] = useState("Sans Serif");
   const [empty, setEmpty] = useState("");
   const [error, setError] = useState(true);
-  console.log(active);
+  console.log(results);
 
   function themeChange() {
     setActive(!active);
@@ -34,20 +35,22 @@ function App() {
 
   const searchWord = async () => {
     if (searchBar === "") {
-      setError(false);
       const ops = "Whoops, can’t be empty…";
       setEmpty(ops);
     }
     try {
-      const response = await fetch(
+      const response = await axios.get(
         `https://api.dictionaryapi.dev/api/v2/entries/en/` + searchBar
       );
-      const data = await response.json();
-      setResults(data[0]);
+      setResults(response.data[0]);
       const reset = "";
       setSearchBar(reset);
-    } catch (error) {
-      setError(!error);
+    } catch {
+      setError(false);
+      console.log("error");
+      setResults(null);
+      const reset = "";
+      setSearchBar(reset);
     }
   };
 
@@ -173,35 +176,33 @@ function App() {
         {results?.meanings?.length > 0 ? (
           <>
             <Heading active={active} {...heading()} />
-            {results.meanings.map((content, index) => {
-              return <Content active={active} {...content} key={index} />;
-            })}
+            {results.meanings.map((content, index) => (
+              <Content active={active} {...content} key={index} />
+            ))}
             <Source active={active} results={results} />
           </>
-        ) : (
-          <>
-            <div
-              className="w-full h-full pt-28 flex flex-col  items-center "
-              style={{ display: error ? "none" : "flex" }}
+        ) : results === null ? (
+          <div
+            className="w-full h-full pt-28 flex flex-col items-center"
+            style={{ display: error ? "none" : "flex" }}
+          >
+            <img src={smile} alt="Smiling emoji" />
+            <span
+              className="mt-8 font-bold text-base leading-6"
+              style={{ color: active ? "white" : "#2D2D2D" }}
             >
-              <img src={smile} />
-              <span
-                className="mt-8 font-bold text-base leading-6"
-                style={{ color: active ? "white" : "#2D2D2D" }}
-              >
-                No Definitions Found
-              </span>
-              <span
-                className="mt-4 text-center font-normal text-base leading-6"
-                style={{ color: active ? "#757575" : "#757575" }}
-              >
-                Sorry pal, we couldn't find definitions for the word you were
-                looking for. You can try the search again at later time or head
-                to the web instead.
-              </span>
-            </div>
-          </>
-        )}
+              No Definitions Found
+            </span>
+            <span
+              className="mt-4 text-center font-normal text-base leading-6"
+              style={{ color: active ? "#757575" : "#757575" }}
+            >
+              Sorry, we couldn't find definitions for the word you were looking
+              for. You can try the search again later or head to the web
+              instead.
+            </span>
+          </div>
+        ) : null}
       </main>
     </>
   );
