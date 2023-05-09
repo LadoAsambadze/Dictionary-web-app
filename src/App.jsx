@@ -38,6 +38,7 @@ function App() {
       const ops = "Whoops, can’t be empty…";
       setEmpty(ops);
     }
+    if (searchBar !== "") {
     try {
       const response = await axios.get(
         `https://api.dictionaryapi.dev/api/v2/entries/en/` + searchBar
@@ -52,6 +53,7 @@ function App() {
       const reset = "";
       setSearchBar(reset);
     }
+  }
   };
 
   const heading = () => {
