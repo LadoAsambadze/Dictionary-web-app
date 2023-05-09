@@ -8,10 +8,8 @@ export const Heading = ({ active, results, word, phonetic }) => {
   const handlePlay = () => {
     ref.current?.play();
   };
-  const findAudio = () => {
-    const audio = results?.phonetics?.find((phone) => phone.audio !== "");
-    return audio?.audio;
-  };
+
+  const audio = results?.phonetics?.find((phone) => phone.audio !== "");
 
   return (
     <>
@@ -27,23 +25,17 @@ export const Heading = ({ active, results, word, phonetic }) => {
             {phonetic}
           </span>
         </div>
-        {results?.phonetics?.map((sound, index) => {
-          if (sound.audio !== "" && index === 1) {
-            // only show the first non-empty audio element
-            return (
-              <>
-                <img
-                  src={play}
-                  className="w-12 h-12 md:w-20 md:h-20 cursor-pointer"
-                  onClick={handlePlay}
-                />
-                <audio className="hidden" ref={ref} src={findAudio()} />
-              </>
-            );
-          } else {
-            return null;
-          }
-        })}
+
+        {audio ? (
+          <>
+            <img
+              src={play}
+              className="w-12 h-12 md:w-20 md:h-20 cursor-pointer"
+              onClick={handlePlay}
+            />
+            <audio className="hidden" ref={ref} src={audio.audio} />
+          </>
+        ) : null}
       </div>
     </>
   );

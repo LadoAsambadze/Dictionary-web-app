@@ -6,7 +6,6 @@ import moon from "./assets/icon-moon.svg";
 import search from "./assets/icon-search.svg";
 import sun from "./assets/icon-sun.svg";
 import smile from "./assets/smile.png";
-
 import Heading from "./Heading";
 import Content from "./Content";
 import Source from "./Source";
