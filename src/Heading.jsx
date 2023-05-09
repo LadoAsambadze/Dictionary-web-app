@@ -2,12 +2,17 @@ import React from "react";
 import play from "./assets/icon-play.svg";
 import { useRef } from "react";
 
-export const Heading = ({ active, audioUrl, word, phonetic }) => {
+export const Heading = ({ active, results, word, phonetic }) => {
   const ref = useRef();
 
   const handlePlay = () => {
-    ref.current.play();
+    ref.current?.play();
   };
+  const findAudio = () => {
+    const audio = results?.phonetics?.find((phone) => phone.audio !== "");
+    return audio?.audio;
+  };
+
   return (
     <>
       <div className="w-full flex flex-row justify-between items-center mt-6 md:mt-12">
@@ -22,13 +27,23 @@ export const Heading = ({ active, audioUrl, word, phonetic }) => {
             {phonetic}
           </span>
         </div>
-        <img
-          src={play}
-          className="w-12 h-12 md:w-20 md:h-20 cursor-pointer"
-          onClick={handlePlay}
-        />
-
-        <audio className="hidden" ref={ref} src={audioUrl} />
+        {results?.phonetics?.map((sound, index) => {
+          if (sound.audio !== "" && index === 1) {
+            // only show the first non-empty audio element
+            return (
+              <>
+                <img
+                  src={play}
+                  className="w-12 h-12 md:w-20 md:h-20 cursor-pointer"
+                  onClick={handlePlay}
+                />
+                <audio className="hidden" ref={ref} src={findAudio()} />
+              </>
+            );
+          } else {
+            return null;
+          }
+        })}
       </div>
     </>
   );

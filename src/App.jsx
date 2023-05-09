@@ -39,28 +39,25 @@ function App() {
       setEmpty(ops);
     }
     if (searchBar !== "") {
-    try {
-      const response = await axios.get(
-        `https://api.dictionaryapi.dev/api/v2/entries/en/` + searchBar
-      );
-      setResults(response.data[0]);
-      const reset = "";
-      setSearchBar(reset);
-    } catch {
-      setError(false);
-      console.log("error");
-      setResults(null);
-      const reset = "";
-      setSearchBar(reset);
+      try {
+        const response = await axios.get(
+          `https://api.dictionaryapi.dev/api/v2/entries/en/` + searchBar
+        );
+        setResults(response.data[0]);
+        const reset = "";
+        setSearchBar(reset);
+      } catch {
+        setError(false);
+        console.log("error");
+        setResults(null);
+        const reset = "";
+        setSearchBar(reset);
+      }
     }
-  }
   };
 
   const heading = () => {
-    const audio = results?.phonetics.find((phone) => phone.audio !== "").audio;
-
     return {
-      audioUrl: audio,
       word: results?.word,
       phonetic: results?.phonetic,
     };
@@ -177,7 +174,7 @@ function App() {
 
         {results?.meanings?.length > 0 ? (
           <>
-            <Heading active={active} {...heading()} />
+            <Heading active={active} results={results} {...heading()} />
             {results.meanings.map((content, index) => (
               <Content active={active} {...content} key={index} />
             ))}
