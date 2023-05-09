@@ -196,7 +196,7 @@ function App() {
               className="mt-4 text-center font-normal text-base leading-6"
               style={{ color: active ? "#757575" : "#757575" }}
             >
-              Sorry, we couldn't find definitions for the word you were looking
+              Sorry, we couldn't find definitions for the Word you were looking
               for. You can try the search again later or head to the web
               instead.
             </span>
